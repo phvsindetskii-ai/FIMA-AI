@@ -8,11 +8,11 @@ class Database:
     def __init__(self):
         self.db = DB_NAME
 
-    async def connect(self):
-        return await aiosqlite.connect(self.db)
+    def connect(self):
+        return aiosqlite.connect(self.db)
 
     async def initialize(self):
-        async with await self.connect() as db:
+        async with self.connect() as db:
 
             await db.execute("""
             CREATE TABLE IF NOT EXISTS users(
@@ -50,7 +50,7 @@ class Database:
         username: str,
         first_name: str
     ):
-        async with await self.connect() as db:
+        async with self.connect() as db:
 
             await db.execute(
                 """
@@ -73,7 +73,7 @@ class Database:
         role: str,
         content: str
     ):
-        async with await self.connect() as db:
+        async with self.connect() as db:
 
             await db.execute(
                 """
@@ -95,7 +95,7 @@ class Database:
         user_id: int,
         limit: int = 10,
     ):
-        async with await self.connect() as db:
+        async with self.connect() as db:
 
             cursor = await db.execute(
                 """
@@ -120,7 +120,7 @@ class Database:
         self,
         user_id: int,
     ):
-        async with await self.connect() as db:
+        async with self.connect() as db:
 
             await db.execute(
                 """
@@ -138,7 +138,7 @@ class Database:
         key: str,
         value: str,
     ):
-        async with await self.connect() as db:
+        async with self.connect() as db:
 
             cursor = await db.execute(
                 """
@@ -192,7 +192,7 @@ class Database:
         self,
         user_id: int,
     ):
-        async with await self.connect() as db:
+        async with self.connect() as db:
 
             cursor = await db.execute(
                 """
@@ -207,4 +207,3 @@ class Database:
 
 
 database = Database()
-            
