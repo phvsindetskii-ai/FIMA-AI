@@ -90,7 +90,7 @@ class Database:
 
             await db.commit()
 
-     async def get_history(
+    async def get_history(
         self,
         user_id: int,
         limit: int = 10,
@@ -116,7 +116,7 @@ class Database:
 
             return rows
 
-    async def clear_history(
+   async def clear_history(
         self,
         user_id: int,
     ):
