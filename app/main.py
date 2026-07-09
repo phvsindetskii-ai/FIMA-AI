@@ -1,35 +1,39 @@
-from aiogram import Bot, Dispatcher
-from aiogram.enums import ParseMode
-from aiogram.client.default import DefaultBotProperties
+from telegram.ext import (
+    Application,
+    CommandHandler,
+    MessageHandler,
+    filters,
+)
 
 from app.config import BOT_TOKEN
-from app.handlers.start import router as start_router
-from app.handlers.chat import router as chat_router
-from app.handlers.help import router as help_router
 from app.database.database import database
+from app.handlers.start import start
+from app.handlers.help import help_command
+from app.handlers.chat import chat
 
-import asyncio
 
-
-async def main():
-
+async def post_init(application: Application):
     await database.initialize()
+    print("✅ Database initialized")
 
-    bot = Bot(
-        token=BOT_TOKEN,
-        default=DefaultBotProperties(
-            parse_mode=ParseMode.HTML
-        ),
+
+def main():
+
+    app = (
+        Application.builder()
+        .token(BOT_TOKEN)
+        .post_init(post_init)
+        .build()
     )
 
-    dp = Dispatcher()
+    app.add_handler(CommandHandler("start", start))
+    app.add_handler(CommandHandler("help", help_command))
+    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, chat))
 
-    dp.include_router(start_router)
-    dp.include_router(help_router)
-    dp.include_router(chat_router)
+    print("🚀 FIMA AI started")
 
-    await dp.start_polling(bot)
+    app.run_polling()
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    main()
