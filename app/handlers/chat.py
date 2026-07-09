@@ -1,7 +1,7 @@
 from telegram import Update
 from telegram.ext import ContextTypes
 
-from app.ai.gemini import ask_gemini
+from app.ai.chandlers import ask_chandlers
 
 
 async def chat(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -14,7 +14,7 @@ async def chat(update: Update, context: ContextTypes.DEFAULT_TYPE):
             action="typing",
         )
 
-        answer = await ask_gemini(
+        answer = await ask_chandlers(
             user_id=update.effective_user.id,
             text=update.message.text,
         )
