@@ -116,7 +116,7 @@ class Database:
 
             return rows
 
-   async def clear_history(
+    async def clear_history(
         self,
         user_id: int,
     ):
