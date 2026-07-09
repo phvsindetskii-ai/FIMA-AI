@@ -1,3 +1,5 @@
+import threading
+
 from telegram.ext import (
     Application,
     CommandHandler,
@@ -5,6 +7,7 @@ from telegram.ext import (
     filters,
 )
 
+from app.web import run_web
 from app.config import BOT_TOKEN
 from app.database.database import database
 from app.handlers.start import start
@@ -18,6 +21,10 @@ async def post_init(application: Application):
 
 
 def main():
+    threading.Thread(
+        target=run_web,
+        daemon=True,
+    ).start()
 
     app = (
         Application.builder()
